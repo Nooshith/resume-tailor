@@ -108,7 +108,7 @@ Rules:
 Examples of the shape (not templates to copy):
 - `Senior Data Engineer  •  Streaming Platforms & Analytics`
 - `Infrastructure Engineer  •  Cloud, IaC & Distributed Systems`
-- `Software Engineer  •  Cloud Efficiency, Capacity & FinOps`
+- `Platform Engineer  •  Cloud Systems & Reliability`
 
 What to write: two or three role-descriptor phrases, separated by `  •  `, first
 phrase matching the JD's target title.
@@ -179,7 +179,7 @@ Rules:
   dates, followed by `+`. `6+ years` if the total is between 6.0 and 6.99, and so
   on. Never round up.
 - Do not start the summary with "I am" or "A" (as in "A results-driven engineer").
-  Start with the role title itself: "Infrastructure Engineer with...", "Senior
+  Start with the role title itself: "Platform Engineer with...", "Senior
   Data Engineer with...".
 - No buzzwords (see `Resume_Tailoring_Skill.md` Section 7).
 
@@ -387,7 +387,7 @@ Include only when the person has real projects worth listing, typically when:
   professional history.
 - They have specific project work (open source, side projects, GitHub repos) that
   directly supports the JD but is not covered by their job bullets.
-- They are moving domains (e.g., an infrastructure engineer applying for an ML
+- They are moving domains (e.g., a backend engineer applying for an ML
   role) and their projects show credible work in the target domain.
 
 If included:
