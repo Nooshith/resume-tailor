@@ -66,15 +66,19 @@ strings: name, contact, summary, skills, jobs, education). Then prompt:
 What the agent should do (make it follow this order):
 
 1. Read `build_resume.js` + `Resume_Section_Spec.md` + the JD in full.
-2. Rewrite ONLY summary, skills items, and experience bullets toward the JD.
+2. Rewrite ONLY subtitle, summary, skills items, and experience bullets toward
+   the JD (summary role identity stays within your real job titles).
    Never invent tools, metrics, dates, titles, or employers. Flag any JD
    requirement you cannot honestly cover (e.g. people-management experience).
+   Fold missing JD points into existing lines using real experience.
 3. Keep every layout constant/helper untouched (fonts, sizes, colors, margins,
    spacing, bullets, tab stops). Edit content strings only.
-4. Build: `node build_resume.js`, then
-   `soffice --headless --convert-to pdf Resume_Tailored.docx`.
+4. Set COMPANY/ROLE_SLUG env vars (plus APPLICANT_NAME on first run) so the
+   run files itself under `~/Desktop/job_resumes/<Company>/<date>_<role>/`
+   with filename `<First>_<Last>_Resume.docx`. Build: `node build_resume.js`,
+   then `soffice --headless --convert-to pdf` the generated DOCX.
 5. Verify with the checker until it prints MATCH (all DY=0, all DL=0):
-   `python3 compare_layout.py ORIGINAL.pdf Resume_Tailored.pdf`
+   `python3 compare_layout.py ORIGINAL.pdf <new pdf>`
    If a section runs long, trim tailored words (never layout numbers) and rebuild.
 6. Deliver the DOCX + PDF, plus: JD coverage %, honestly omitted items, and
    claims to be ready to defend in interview.
@@ -83,13 +87,13 @@ What the agent should do (make it follow this order):
 
 ```
 JD (URL/text)
-  -> content rewrite (summary/skills/bullets, honesty rules, no fabrication)
+  -> content rewrite (subtitle/summary/skills/bullets, honesty rules, no fabrication)
   -> build_resume.js  (docx lib: constants S_NAME..S_SK, helpers name/subtitle/
        contact/section/summary/skill/jobline/role/bullet/certline/eduline,
        Letter page, 0.22"/0.6" margins, Carlito, navy 1F3864)
-  -> Resume_Tailored.docx
+  -> <First>_<Last>_Resume.docx (auto-filed under
+       ~/Desktop/job_resumes/<Company>/<date>_<role>/, filename from your name)
   -> LibreOffice (soffice --headless --convert-to pdf)
-  -> Resume_Tailored.pdf
   -> compare_layout.py (PyMuPDF: every section header Y-position + line count
        vs the original PDF; MATCH = identical spacing, still 1 page)
 ```

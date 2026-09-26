@@ -1,18 +1,37 @@
 // Resume builder: fixed-layout 1-page resume -> .docx (then PDF via LibreOffice).
 //
 // HOW TO USE:
-//   1. Replace the identity placeholders below (YOUR FULL NAME, City/ST, phone, email).
-//   2. Replace the Summary / Skills / Experience content with YOUR OWN real history.
-//      The job content in this file is only an EXAMPLE showing JD-tailored wording.
-//   3. Never invent tools, metrics, dates, titles, or employers you cannot defend.
-//   4. Run:  node build_resume.js
-//      PDF:   soffice --headless --convert-to pdf Resume_Tailored.docx
+//   1. Set your identity (env vars or edit below). The output filename is
+//      derived from YOUR name automatically: Firstname_Lastname_Resume.docx
+//        APPLICANT_NAME="Jane Doe" COMPANY=Acme ROLE_SLUG=Backend-Engineer node build_resume.js
+//   2. Every run files itself under:
+//        ~/Desktop/job_resumes/<Company>/<YYYY-MM-DD>_<Role>/<First>_<Last>_Resume.docx
+//      Override with OUT_BASE / RUN_DATE env vars (see below).
+//   3. Replace the Summary / Skills / Experience content with YOUR OWN real
+//      history. Everything below marked EXAMPLE is synthetic sample content.
+//   4. Never invent tools, metrics, dates, titles, or employers you cannot defend.
+//   5. PDF: soffice --headless --convert-to pdf <the .docx>
 //
-// Layout: every value controlling the look lives in the constants + helpers below.
+// Layout: every value controlling the look lives in the constants + helpers.
 // To change content, edit only the strings in the `children: [...]` block.
 
 const { Document, Packer, Paragraph, TextRun, AlignmentType, BorderStyle, convertInchesToTwip } = require('docx');
 const fs = require('fs');
+const os = require('os');
+const path = require('path');
+
+// ---- EDIT ME (or pass as env vars): identity + this run's target ----
+const APPLICANT_NAME = process.env.APPLICANT_NAME || 'YOUR FULL NAME';
+const COMPANY        = process.env.COMPANY        || 'ExampleCorp';
+const ROLE_SLUG      = process.env.ROLE_SLUG      || 'Example-Role';
+const RUN_DATE       = process.env.RUN_DATE       || new Date().toISOString().slice(0, 10);
+const OUT_BASE       = process.env.OUT_BASE       || path.join(os.homedir(), 'Desktop', 'job_resumes');
+
+// Filename derives from the applicant name: Firstname_Lastname_Resume
+const FILE_BASE = APPLICANT_NAME.trim().split(/\s+/).join('_') + '_Resume';
+const OUT_DIR = path.join(OUT_BASE, COMPANY, `${RUN_DATE}_${ROLE_SLUG}`);
+fs.mkdirSync(OUT_DIR, { recursive: true });
+const OUT_FILE = path.join(OUT_DIR, `${FILE_BASE}.docx`);
 
 const FONT = 'Carlito';               // install Carlito (metric-compatible with Calibri)
 const NAVY = '1F3864';                // headings, name, role accents
@@ -57,21 +76,21 @@ const doc=new Document({
       margin:{top:convertInchesToTwip(0.22),bottom:convertInchesToTwip(0.22),left:convertInchesToTwip(0.6),right:convertInchesToTwip(0.6)},
     }},
     children:[
-      // ---- EDIT ME: identity ----
-      name('YOUR FULL NAME'),
+      // ---- EDIT ME: identity (or APPLICANT_NAME env) ----
+      name(APPLICANT_NAME),
       subtitle('Software Engineer  •  Cloud Efficiency, Capacity & FinOps'),
       contact('City, ST  •  +1 (XXX) XXX-XXXX  •  ','you@example.com'),
 
       section('SUMMARY'),
-      // ---- EDIT ME: 4-6 sentences, one real metric from your bullets ----
-      summary('Software and Site Reliability Engineer with 6+ years building, operating, and optimizing production infrastructure across AWS, Azure, GCP, and on-prem. Own capacity planning, forecasting, and FinOps for 30+ business-critical applications and 1,500+ servers, improving utilization 18% while holding performance. Build monitoring and reporting in Python and SQL with Prometheus, Grafana, Power BI, and Tableau, run workloads on Kubernetes and OpenShift with SLI/SLOs and error budgets, and lead incident response, RCA, and 24/7 on-call. Partner across 12 teams with stakeholders on roadmaps and data quality, applying GenAI tooling (Claude, GitHub Copilot) to automate reporting.'),
+      // ---- EDIT ME: 4-6 sentences, one real metric from your bullets (EXAMPLE below) ----
+      summary('Software and Site Reliability Engineer with 6+ years planning production infrastructure and data center capacity across AWS, Azure, GCP, and on-prem. Own capacity planning, forecasting, and FinOps for 25+ business-critical applications and 1,000+ servers, improving utilization 15% and cutting TCO while holding performance. Build fleet health reporting in Python and SQL with Power BI, Tableau, Grafana, tracking utilization, failures, lifecycle for refresh and decommissioning. Turn ambiguous demand into structured plans, partnering independently across Engineering, Finance, Supply Chain on roadmaps and recommendations for senior leadership, using GenAI/AI tools (Claude, GitHub Copilot) for reporting.'),
 
       section('TECHNICAL SKILLS'),
-      // ---- EDIT ME: keep labels, list only tools you have actually used ----
+      // ---- EDIT ME: keep labels, list only tools you have actually used (EXAMPLE below) ----
       skill('Languages & Automation','Python, Java, Bash, PowerShell, YAML, C, C++'),
       skill('AI & ML','Prompt engineering (structured instruction files), LLM benchmarking & evaluation (Claude Opus, GPT), ML-based forecasting & anomaly detection, ML/GPU capacity planning, Microsoft 365 Copilot, GitHub Copilot, deterministic rule-based logic'),
       skill('Software Engineering','Object-Oriented Design, Design Patterns, Multithreading, JVM Tuning, SDLC, Code Reviews, Git, REST APIs, Microservices'),
-      skill('Program & Reliability','Program Management, Roadmap Planning, Cross-Functional Coordination, Capacity Planning, Resource Allocation, Long-Range Forecasting, Incident Command, RCA & Postmortems, SLI/SLO & Error Budgets, DR/HA, Change Management, Stakeholder Management'),
+      skill('Program & Reliability','Program Management, Technical Program Management, Cross-Functional Coordination, Capacity Planning, Resource Allocation, Long-Range Forecasting, Incident Command, RCA & Postmortems, SLI/SLO & Error Budgets, DR/HA, Change Management, Stakeholder Management'),
       skill('Data & Messaging','SQL, MySQL, PostgreSQL, Kafka, Redis, MongoDB, IBM MQ, MSSQL, Sybase, Excel, XML/CSV transformation'),
       skill('Containers & Cloud','Kubernetes (EKS/AKS/GKE), OpenShift, Docker, Helm, ArgoCD, AWS, Azure, GCP, On-Prem/PCF'),
       skill('Systems & Networking','Linux (RHEL), Windows Server, Filesystems, Disk/Storage, TCP/IP, DNS, NGINX, Firewalls, VPN'),
@@ -81,21 +100,21 @@ const doc=new Document({
 
       section('PROFESSIONAL EXPERIENCE'),
 
-      // ---- EDIT ME: real employers, real titles, real metrics ----
+      // ---- EDIT ME: real employers, real titles, real metrics (EXAMPLE below) ----
       jobline('Example Corp','Plano, TX','Dec 2025 - Present'),
       role('Capacity Management Specialist | Infrastructure Engineer II'),
-      bullet('Forecasted and scaled CPU, storage, and network capacity',' across multi-data-center and containerized (Docker, OpenShift/Kubernetes) environments, cutting capacity-related performance incidents 25% under rapidly growing demand.'),
-      bullet('Owned infrastructure capacity planning and long-range forecasting for 30+ business-critical applications',' driving resource allocation and right-sizing that improved utilization 18% and cut over-provisioning, with Python/SQL tooling and GenAI-assisted (GitHub Copilot) review.'),
-      bullet('Monitored P95 utilization across 1,500+ data center servers',' (Linux, Windows, MSSQL, Sybase, grid-compute, OpenShift/Kubernetes) via Grafana, Splunk, Power BI, and Tableau, finding 92-98% of database-tier breaches were memory-driven across 3 regions.'),
-      bullet('Led a cross-functional AI-assisted reporting program across 12 teams',' managing the initiative end to end to 98% accuracy after benchmarking Claude Opus against GPT models, gathering requirements and aligning infrastructure and finance stakeholders with reporting on data analytics platforms (Power BI, Tableau, Grafana) that contributed to 900+ governance attestations.'),
-      bullet('Built PowerShell and Python automation that cut operational toil',' with single-command multi-application batch execution and per-item failure handling, saving ~2,100 hours of manual breach-document updates, version-controlled in Git/Bitbucket with documentation in Confluence, plus self-service dashboards tracking review status, breach counts, approvals, and overdue items.'),
+      bullet('Forecasted and scaled server, storage, and network capacity',' across multi-data-center and containerized (Docker, OpenShift/Kubernetes) environments, informing multi-year fleet refresh plans and cutting capacity-related performance incidents 20% under growing demand.'),
+      bullet('Owned infrastructure capacity planning and long-range forecasting for 25+ business-critical applications',' driving resource allocation and right-sizing that improved utilization 15% and cut total cost of ownership, with Python/SQL and GenAI-assisted (GitHub Copilot) tooling.'),
+      bullet('Monitored P95 utilization across 1,000+ data center servers',' (Linux, Windows, MSSQL, Sybase, grid-compute, OpenShift/Kubernetes) via Grafana, Splunk, Power BI, and Tableau, finding 90-95% of database-tier breaches were memory-driven across 2 regions.'),
+      bullet('Led a cross-functional AI-assisted reporting program across 8 teams',' managing the initiative end to end to 97% accuracy after benchmarking Claude Opus against GPT models, building roadmaps and business cases with engineering and finance stakeholders on data analytics platforms (Power BI, Tableau, Grafana) that contributed to 500+ governance attestations.'),
+      bullet('Built PowerShell and Python automation that cut operational toil',' with single-command multi-application batch execution and per-item failure handling, saving ~1,500 hours of manual breach-document updates, version-controlled in Git/Bitbucket with documentation in Confluence, plus self-service dashboards tracking review status, breach counts, approvals, and overdue items.'),
 
       jobline('Example Health','Chicago, IL','Feb 2024 - Nov 2025'),
       role('Site Reliability Engineer'),
-      bullet('Led incident response, root cause analysis, and postmortems',' on a 24/7 on-call rotation across Java, .NET, and batch workloads on AWS EKS, Azure AKS, GCP, PCF, and on-prem, cutting MTTR 35% with sustainable on-call practices.'),
+      bullet('Led incident response, root cause analysis, and postmortems',' on a 24/7 on-call rotation across Java, .NET, and batch workloads on AWS EKS, Azure AKS, GCP, PCF, and on-prem, cutting MTTR 30% with sustainable on-call practices.'),
       bullet('Improved monitoring, logging, and alerting systems',' with SLIs/SLOs and error budgets in Grafana, Prometheus, Splunk, ELK, AppDynamics, and Dynatrace, catching CPU, memory, and latency issues with gap detection before they reached users.'),
-      bullet('Built ML-based capacity forecasting (GrafanaML) and tuned Kubernetes autoscaling',' (HPA/VPA/Cluster Autoscaler) to prevent CPU throttling and memory leaks, improving app stability 30%, and ran JMeter load and chaos tests with benchmarking for zero Sev-1 escalations, deploying Go and Java microservices in Docker with Kafka, IBM MQ, and Redis.'),
-      bullet('Managed CI/CD pipelines for distributed systems',' (GitHub Actions, Azure DevOps, Jenkins, Bitbucket), cutting deployment time 40% and operational toil across multi-environment releases with runbooks and postmortems in Confluence/Jira.'),
+      bullet('Built ML-based capacity forecasting (GrafanaML) and tuned Kubernetes autoscaling',' (HPA/VPA/Cluster Autoscaler) to prevent CPU throttling and memory leaks, improving app stability 25%, and ran JMeter load and chaos tests with benchmarking for zero Sev-1 escalations, deploying Go and Java microservices in Docker with Kafka, IBM MQ, and Redis.'),
+      bullet('Managed CI/CD pipelines for distributed systems',' (GitHub Actions, Azure DevOps, Jenkins, Bitbucket), cutting deployment time 35% and operational toil across multi-environment releases with runbooks and postmortems in Confluence/Jira.'),
 
       jobline('Example Services','Remote','Jul 2021 - Jul 2022'),
       role('Systems Engineer'),
@@ -106,10 +125,10 @@ const doc=new Document({
       bullet('Built and deployed Java 11 / Spring Boot microservices',' on Azure with REST APIs over Oracle and MySQL, and set up CI/CD pipelines (Jenkins, GitHub Actions) working across Dev, QA, Security, and Infrastructure in Agile/Scrum.'),
 
       section('CERTIFICATIONS & EDUCATION'),
-      skill('Certifications','Mercor: Introduction to Agents - AI Agent Evaluation (Sep 2026)  •  HashiCorp Certified: Terraform Associate'),
-      eduline('M.S., Information Technology - University of Cincinnati, Cincinnati, OH','Dec 2023'),
+      skill('Certifications','Example Certifier: Sample Cloud Certification (Sep 2026)  •  Example Vendor Certified: Sample Associate'),
+      eduline('M.S., Information Technology - Example University, Example City, ST','Dec 2023'),
     ],
   }],
 });
 
-Packer.toBuffer(doc).then(b=>fs.writeFileSync('Resume_Tailored.docx',b));
+Packer.toBuffer(doc).then(b=>fs.writeFileSync(OUT_FILE,b)).then(()=>console.log('wrote', OUT_FILE));

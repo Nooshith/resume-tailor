@@ -15,10 +15,10 @@ DEFAULT_HEADERS = [
     "SUMMARY",
     "TECHNICAL SKILLS",
     "PROFESSIONAL EXPERIENCE",
-    "Bank of America",
-    "Oak Street Health",
-    "Tata Consultancy Services",
-    "Ebtech",
+    "Example Corp",
+    "Example Health",
+    "Example Services",
+    "Example Tech",
     "CERTIFICATIONS & EDUCATION",
 ]
 

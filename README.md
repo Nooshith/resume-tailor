@@ -35,7 +35,7 @@ Windows notes:
 - Run commands in PowerShell or Windows Terminal.
 - `soffice.exe` lives in `C:\Program Files\LibreOffice\program\`. If `soffice`
   is not recognized, either add that folder to PATH or use the full path in
-  the PDF step: `& "C:\Program Files\LibreOffice\program\soffice.exe" --headless --convert-to pdf Resume_Tailored.docx`
+  the PDF step (see Output section for the actual file location).
 - Python's `pip` may be `py -m pip` on some setups.
 
 Linux notes:
@@ -54,11 +54,35 @@ pip install -r requirements.txt   # pymupdf + pypdf (layout verification)
 Manual build sanity check (no AI needed):
 
 ```bash
-node build_resume.js                          # -> Resume_Tailored.docx
-soffice --headless --convert-to pdf Resume_Tailored.docx   # -> Resume_Tailored.pdf
+node build_resume.js   # files itself - see Output section below
 ```
 
 Open the PDF: it must be exactly 1 page.
+
+## Output, filenames, folders
+
+Every run files itself - no manual moving:
+
+```
+~/Desktop/job_resumes/<Company>/<YYYY-MM-DD>_<Role>/<First>_<Last>_Resume.docx
+```
+
+The filename derives from your name automatically. Control it with env vars
+(or edit the constants at the top of `build_resume.js`):
+
+```bash
+APPLICANT_NAME="Jane Doe" COMPANY=Acme ROLE_SLUG=Backend-Engineer node build_resume.js
+# -> ~/Desktop/job_resumes/Acme/2026-09-26_Backend-Engineer/Jane_Doe_Resume.docx
+soffice --headless --convert-to pdf ~/Desktop/job_resumes/Acme/*/*.docx
+```
+
+| Env var | Default | Purpose |
+|---|---|---|
+| `APPLICANT_NAME` | `YOUR FULL NAME` | Identity + filename base |
+| `COMPANY` | `ExampleCorp` | Company folder |
+| `ROLE_SLUG` | `Example-Role` | Role folder suffix (keep filesystem-safe) |
+| `RUN_DATE` | today (`YYYY-MM-DD`) | Date folder prefix |
+| `OUT_BASE` | `~/Desktop/job_resumes` | Root (point elsewhere on Windows) |
 
 ## 3. Choose your AI runner
 
@@ -123,12 +147,14 @@ edits strings and iterates on measured output.
 > return DOCX + PDF: <paste JD link or full JD text>
 >
 > Rules: read build_resume.js + Resume_Section_Spec.md + the JD first. Rewrite
-> ONLY summary, skills items, and experience bullets. Never invent tools,
+> ONLY subtitle, summary, skills items, and experience bullets (summary role
+> identity stays within your real job titles). Never invent tools,
 > metrics, dates, titles, or employers - flag JD requirements I cannot honestly
-> cover. Keep every layout constant/helper untouched. Build with
+> cover. Keep every layout constant/helper untouched. Set COMPANY/ROLE_SLUG
+> env vars so the run files itself, build with
 > `node build_resume.js`, convert with
 > `soffice --headless --convert-to pdf`, verify with
-> `python3 compare_layout.py ORIGINAL.pdf Resume_Tailored.pdf` until MATCH,
+> `python3 compare_layout.py ORIGINAL.pdf <new pdf>` until MATCH,
 > trimming words (never layout numbers) if sections run long. Then report JD
 > coverage %, omitted items, and claims to defend in interview.
 
@@ -144,9 +170,9 @@ JD (URL/text)
   -> build_resume.js (docx lib: constants S_NAME..S_SK, helpers name/subtitle/
        contact/section/summary/skill/jobline/role/bullet/certline/eduline,
        Letter page, 0.22"/0.6" margins, Carlito, navy 1F3864)
-  -> Resume_Tailored.docx
+  -> Resume_Tailored.docx (actually <First>_<Last>_Resume.docx, auto-filed)
   -> LibreOffice (soffice --headless --convert-to pdf)
-  -> Resume_Tailored.pdf
+  -> <First>_<Last>_Resume.pdf
   -> compare_layout.py (PyMuPDF: every section header Y-position + line count
        vs the original PDF; MATCH = identical spacing, still 1 page)
 ```
