@@ -1,0 +1,14 @@
+{
+  "name": "resume-tailor",
+  "version": "1.0.0",
+  "description": "Fixed-layout 1-page resume builder: edit content strings, build .docx, convert to PDF.",
+  "main": "build_resume.js",
+  "scripts": {
+    "build": "node build_resume.js",
+    "pdf": "node build_resume.js && soffice --headless --convert-to pdf Resume_Tailored.docx",
+    "check": "python3 compare_layout.py"
+  },
+  "dependencies": {
+    "docx": "8.5.0"
+  }
+}
