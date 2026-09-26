@@ -101,7 +101,7 @@ const doc=new Document({
       section('PROFESSIONAL EXPERIENCE'),
 
       // ---- EDIT ME: real employers, real titles, real metrics (EXAMPLE below) ----
-      jobline('Example Corp','Plano, TX','Dec 2025 - Present'),
+      jobline('Example Corp','Austin, TX','Dec 2025 - Present'),
       role('Capacity Management Specialist | Infrastructure Engineer II'),
       bullet('Forecasted and scaled server, storage, and network capacity',' across multi-data-center and containerized (Docker, OpenShift/Kubernetes) environments, informing multi-year fleet refresh plans and cutting capacity-related performance incidents 20% under growing demand.'),
       bullet('Owned infrastructure capacity planning and long-range forecasting for 25+ business-critical applications',' driving resource allocation and right-sizing that improved utilization 15% and cut total cost of ownership, with Python/SQL and GenAI-assisted (GitHub Copilot) tooling.'),
@@ -109,7 +109,7 @@ const doc=new Document({
       bullet('Led a cross-functional AI-assisted reporting program across 8 teams',' managing the initiative end to end to 97% accuracy after benchmarking Claude Opus against GPT models, building roadmaps and business cases with engineering and finance stakeholders on data analytics platforms (Power BI, Tableau, Grafana) that contributed to 500+ governance attestations.'),
       bullet('Built PowerShell and Python automation that cut operational toil',' with single-command multi-application batch execution and per-item failure handling, saving ~1,500 hours of manual breach-document updates, version-controlled in Git/Bitbucket with documentation in Confluence, plus self-service dashboards tracking review status, breach counts, approvals, and overdue items.'),
 
-      jobline('Example Health','Chicago, IL','Feb 2024 - Nov 2025'),
+      jobline('Example Health','Denver, CO','Feb 2024 - Nov 2025'),
       role('Site Reliability Engineer'),
       bullet('Led incident response, root cause analysis, and postmortems',' on a 24/7 on-call rotation across Java, .NET, and batch workloads on AWS EKS, Azure AKS, GCP, PCF, and on-prem, cutting MTTR 30% with sustainable on-call practices.'),
       bullet('Improved monitoring, logging, and alerting systems',' with SLIs/SLOs and error budgets in Grafana, Prometheus, Splunk, ELK, AppDynamics, and Dynatrace, catching CPU, memory, and latency issues with gap detection before they reached users.'),
