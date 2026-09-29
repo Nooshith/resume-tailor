@@ -20,7 +20,7 @@ Windows.
 Then bring this repo into Muse — clone it or upload the folder, whichever
 your Muse surface supports:
 
-`git clone https://github.com/forgephantom/resume-tailor.git`
+`git clone https://github.com/forgephantom/applyforge.git`
 
 No setup commands needed.
 
