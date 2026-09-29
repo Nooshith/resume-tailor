@@ -207,7 +207,7 @@ Why it is built this way:
 | `build_resume.js` | Layout engine + sample content. Edit strings only; your real data comes from env vars or your private copy. |
 | `Resume_Section_Spec.md` | Content rules: sections, bullet template, honesty/ban rules. |
 | `compare_layout.py` | Layout verifier: `python3 compare_layout.py ORIG.pdf NEW.pdf`. |
-| `HOW_TO_RUN_OPENCODE.md` | Alternate quick guide for OpenCode users. |
+| `HOW_TO_RUN_MUSE.md` | Short Muse-only quick guide: install, onboard, tailor, auto-apply. |
 | `package.json` / `requirements.txt` | Pinned deps. |
 
 ## 6. Troubleshooting

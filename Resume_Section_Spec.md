@@ -1,17 +1,23 @@
 # Resume Section Specification
 
-Instructions for any LLM to write the content of each resume section. Any model
-following this file should produce content that fits the same code-based layout and
-that another model, following the same file, would produce near-identically.
+Instructions for **Meta Muse** to write the content of each resume section.
+Muse follows this file to produce content that fits the same code-based
+layout; another run following the same file should produce near-identical
+output.
 
-This file governs **what to write in each section**. Two other files handle the rest:
-- `Resume_Tailoring_Skill.md` governs the overall rewrite rules (no fabrication,
-  ATS keyword coverage, no buzzwords, honest role-match gate).
+> Note: references below to `Resume_Tailoring_Skill.md` mean the tailoring
+> rules in `README.md` §3 (or your own private skill file by that name — it
+> is not part of this repo).
+
+This file governs **what to write in each section**. Two other sources handle
+the rest:
+- The tailoring rules in `README.md` §3 (no fabrication, ATS keyword
+  coverage, no buzzwords, honest role-match gate).
 - `build_resume.js` in the code base governs layout, font, color, and spacing.
 
-Follow all three together. Where this file conflicts with either of the others,
-`Resume_Tailoring_Skill.md` wins (it holds the absolute rules on honesty,
-buzzwords, and character bans), then this file, then layout.
+Follow all three together. Where this file conflicts with either of the
+others, the README's tailoring rules win (they hold the absolute rules on
+honesty, buzzwords, and character bans), then this file, then layout.
 
 ## Universality: this file must work for any resume
 
@@ -552,7 +558,7 @@ any section:
 
 ---
 
-## Process any LLM should follow, in this order
+## Process Muse follows, in this order
 
 1. Read the person's current resume in full.
 2. Read the target JD in full.
@@ -576,7 +582,7 @@ any section:
     covered, the list of items honestly omitted, and any specific claims in the
     new resume that they should be ready to defend in an interview.
 
-The goal is the same output regardless of which LLM runs these instructions.
-Every rule above is written to be checkable rather than interpretive. If two runs
-of two different models produce meaningfully different resumes from the same
-inputs, the difference is a bug in one of the runs, not creative variation.
+The goal is the same output on every Muse run from the same inputs.
+Every rule above is written to be checkable rather than interpretive. If two
+runs produce meaningfully different resumes from the same inputs, the
+difference is a bug in one of the runs, not creative variation.
