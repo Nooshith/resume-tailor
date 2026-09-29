@@ -2,3 +2,8 @@ node_modules/
 *.docx
 *.pdf
 .DS_Store
+# Personal resume data - NEVER push to GitHub
+baseline/
+jobs/
+FOLDER_CONVENTION.md
+package-lock.json
