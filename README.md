@@ -1,9 +1,15 @@
 # ApplyForge (Meta Muse edition)
 
-Upload your base resume once — Muse extracts your roles, finds matching jobs,
-tailors a 1-page resume per job, and applies. Up to **50–75 applications per
-day**. Your files live in **Google Drive**, never on local disk, and this repo
-never holds your personal data.
+![one prompt](https://img.shields.io/badge/run-one%20prompt-blue)
+![auto-apply](https://img.shields.io/badge/auto--apply-up%20to%2075%2Fday-green)
+![runs on Muse](https://img.shields.io/badge/runs%20on-Meta%20Muse-purple)
+![no installs](https://img.shields.io/badge/installs-none-orange)
+
+**AI job-application autopilot.** Upload your base resume once — Muse
+extracts your roles, finds matching jobs, tailors a 1-page ATS-optimized
+resume per job, and applies. Up to **50–75 applications per day**, on
+autopilot from the 3rd application. Your files live in **Google Drive**,
+never on local disk, and this repo never holds your personal data.
 
 > **One prompt runs everything.** Load this repo into Muse (it reads every
 > file, beginning to end), paste the single prompt in §1, and Muse runs the
