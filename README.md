@@ -112,7 +112,9 @@ All you do:
 1. Get the Muse app at [muse.ai](https://muse.ai) — iPhone (App Store),
    Android (Google Play), the Mac app, or the web app, which works on any OS
    including Windows.
-2. Bring this repo into Muse (clone it or upload the folder).
+2. Bring this repo into Muse — clone it or upload the folder:
+
+   `git clone https://github.com/forgephantom/resume-tailor.git`
 3. Paste the onboarding prompt from §1.
 
 Muse handles the rest, including installing the pinned dependencies
