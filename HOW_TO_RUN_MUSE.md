@@ -4,32 +4,17 @@ Everything in this repo is done through **Meta Muse** — no other runner needed
 Muse reads the JD, rewrites your resume content, rebuilds the DOCX, converts
 to PDF, verifies the layout, and (in apply mode) submits applications.
 
-## 1. Install the tools Muse will use
+## 1. You install nothing
 
-Muse runs these on your behalf; you just need them installed.
+There is nothing to install on your machine — no Node, no Python, no
+LibreOffice, no fonts. **Muse runs everything** in its own environment and
+sets up the pinned dependencies itself (`docx@8.5.0`, `pymupdf`, `pypdf`)
+the first time it builds.
 
-```bash
-# Node 18+ (docx@8.5.0 — pinned, layout was calibrated on v8)
-# Python 3.9+ (pymupdf + pypdf for layout verification)
-# LibreOffice (soffice — DOCX -> PDF conversion)
-# Carlito font (the resume's exact font)
-```
+## 2. Bring this repo into Muse
 
-| Tool | macOS | Windows | Linux (Ubuntu/Debian) |
-|---|---|---|---|
-| Node.js 18+ | `brew install node` | `winget install OpenJS.NodeJS.LTS` | `sudo apt install nodejs npm` |
-| Python 3.9+ | preinstalled or `brew install python` | `winget install Python.Python.3.12` | `sudo apt install python3 python3-pip` |
-| LibreOffice | `brew install --cask libreoffice` | `winget install TheDocumentFoundation.LibreOffice` | `sudo apt install libreoffice-writer` |
-| Carlito font | `brew install --cask font-carlito` | install `ofl/carlito/` from github.com/google/fonts | `sudo apt install fonts-crosextra-carlito` |
-
-## 2. Get this repo and set it up
-
-```bash
-git clone https://github.com/forgephantom/resume-tailor.git
-cd resume-tailor
-npm install
-pip install -r requirements.txt
-```
+Clone it or upload the folder into Muse — whichever your Muse surface
+supports. No setup commands needed.
 
 ## 3. Open it in Muse and onboard
 

@@ -101,36 +101,20 @@ node build_resume.js
 
 ---
 
-## 2. Prerequisites
+## 2. You install nothing
 
-Four things, on any OS (macOS, Windows, Linux):
+There is nothing to install on your machine — no Node, no Python, no
+LibreOffice, no fonts. **Muse runs everything** in its own environment:
+dependency setup, resume builds, PDF conversion, and layout verification.
 
-| Tool | macOS | Windows | Linux (Ubuntu/Debian) |
-|---|---|---|---|
-| Node.js 18+ | `brew install node` | `winget install OpenJS.NodeJS.LTS` | `sudo apt install nodejs npm` |
-| Python 3.9+ | preinstalled or `brew install python` | `winget install Python.Python.3.12` | `sudo apt install python3 python3-pip` |
-| LibreOffice (`soffice`, DOCX → PDF) | `brew install --cask libreoffice` | `winget install TheDocumentFoundation.LibreOffice` | `sudo apt install libreoffice-writer` |
-| Carlito font (the resume's exact font) | `brew install --cask font-carlito` | download `ofl/carlito/` from github.com/google/fonts, install each `.ttf` | `sudo apt install fonts-crosextra-carlito` |
-| Git | preinstalled | `winget install Git.Git` | `sudo apt install git` |
+All you do:
 
-Setup:
+1. Bring this repo into Muse (clone it or upload the folder).
+2. Paste the onboarding prompt from §1.
 
-```bash
-git clone https://github.com/forgephantom/resume-tailor.git
-cd resume-tailor
-npm install                  # docx@8.5.0, PINNED — v9 renders spacing differently
-pip install -r requirements.txt   # pymupdf + pypdf (layout verification)
-node --version && python3 --version && soffice --version
-```
-
-Sanity check (no AI needed) — builds the sample template, must be 1 page:
-
-```bash
-node build_resume.js
-```
-
-Windows note: `soffice.exe` lives in `C:\Program Files\LibreOffice\program\`.
-If it is not on PATH, use the full path in the PDF step.
+Muse handles the rest, including installing the pinned dependencies
+(`docx@8.5.0`, `pymupdf`, `pypdf`) the first time it builds, and verifying
+the sample template renders exactly 1 page before your first real run.
 
 ---
 
@@ -207,22 +191,20 @@ Why it is built this way:
 | `build_resume.js` | Layout engine + sample content. Edit strings only; your real data comes from env vars or your private copy. |
 | `Resume_Section_Spec.md` | Content rules: sections, bullet template, honesty/ban rules. |
 | `compare_layout.py` | Layout verifier: `python3 compare_layout.py ORIG.pdf NEW.pdf`. |
-| `HOW_TO_RUN_MUSE.md` | Short Muse-only quick guide: install, onboard, tailor, auto-apply. |
+| `HOW_TO_RUN_MUSE.md` | Short Muse-only quick guide: onboard, tailor, auto-apply. No installs. |
 | `package.json` / `requirements.txt` | Pinned deps. |
 
 ## 6. Troubleshooting
 
-- **`soffice` not found (Windows):** use the full path to `soffice.exe`
-  (section 2).
+Everything below is Muse's job to fix — just describe the symptom in chat.
+
 - **PDF is 2 pages:** tailored text ran long. Ask Muse to shorten
   summary/bullets a few words (keep metrics + tool names) and rebuild. Never
   shrink fonts/margins.
-- **Wraps differ from the original:** wrong font (install Carlito, section 2)
-  or wrong docx version (`npm install` must resolve 8.5.0 — check
-  `npm list docx`).
-- **LibreOffice replaces fonts:** clear the font cache (`fc-cache -f` on
-  macOS/Linux) after installing Carlito, then reconvert.
-- **Verification never reaches MATCH:** the model is editing layout numbers
+- **Wraps differ from the original:** wrong font or wrong docx version in
+  Muse's environment — ask Muse to reinstall the pinned deps (`docx@8.5.0`,
+  Carlito) and rebuild.
+- **Verification never reaches MATCH:** Muse is editing layout numbers
   instead of trimming words — remind it: content strings only, constants
   untouched.
 - **Drive folder not found:** re-run onboarding and give the exact Drive path;
