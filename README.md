@@ -242,3 +242,8 @@ Everything below is Muse's job to fix — just describe the symptom in chat.
   untouched.
 - **Drive folder not found:** re-run onboarding and give the exact Drive path;
   it becomes `OUT_BASE` for every later run.
+
+## 7. Found an issue?
+
+Open an [issue](https://github.com/forgephantom/applyforge/issues) — reported
+problems are triaged and fixed automatically, no waiting on a maintainer.
