@@ -9,8 +9,10 @@
 //      derived from YOUR name automatically: Firstname_Lastname_Resume.docx
 //        APPLICANT_NAME="Jane Doe" COMPANY=Acme ROLE_SLUG=Backend-Engineer node build_resume.js
 //   2. Every run files itself under:
-//        ~/Desktop/job_resumes/<Company>/<YYYY-MM-DD>_<Role>/<First>_<Last>_Resume.docx
-//      Override with OUT_BASE / RUN_DATE env vars (see below).
+//        <OUT_BASE>/<Company>/<YYYY-MM-DD>_<Role>/<First>_<Last>_Resume.docx
+//      OUT_BASE defaults to your Google Drive's job_resumes folder when a
+//      Drive mount is found, otherwise ~/Desktop/job_resumes. Override with
+//      the OUT_BASE env var (see below).
 //   3. PDF: soffice --headless --convert-to pdf <the .docx>
 //
 // Layout: every value controlling the look lives in the constants + helpers.
@@ -26,7 +28,32 @@ const APPLICANT_NAME = process.env.APPLICANT_NAME || 'YOUR FULL NAME';
 const COMPANY        = process.env.COMPANY        || 'ExampleCorp';
 const ROLE_SLUG      = process.env.ROLE_SLUG      || 'Example-Role';
 const RUN_DATE       = process.env.RUN_DATE       || new Date().toISOString().slice(0, 10);
-const OUT_BASE       = process.env.OUT_BASE       || path.join(os.homedir(), 'Desktop', 'job_resumes');
+
+// Output root: Google Drive first, local Desktop as fallback.
+// Checks common Drive mount points; override always with OUT_BASE env var.
+function defaultOutBase(){
+  const home = os.homedir();
+  const candidates = [
+    path.join(home, 'Google Drive', 'job_resumes'),
+    path.join(home, 'Library', 'CloudStorage'),          // macOS: GoogleDrive-*/My Drive below
+  ];
+  for (const c of candidates) {
+    if (c.endsWith('CloudStorage')) {
+      try {
+        for (const d of fs.readdirSync(c)) {
+          if (d.startsWith('GoogleDrive-')) {
+            const p = path.join(c, d, 'My Drive', 'job_resumes');
+            return p; // Drive for Desktop mount found; created on first run
+          }
+        }
+      } catch (e) { /* not mounted */ }
+      continue;
+    }
+    try { if (fs.statSync(path.dirname(c)).isDirectory()) return c; } catch (e) { /* skip */ }
+  }
+  return path.join(home, 'Desktop', 'job_resumes');
+}
+const OUT_BASE = process.env.OUT_BASE || defaultOutBase();
 
 // Filename derives from the applicant name: Firstname_Lastname_Resume
 const FILE_BASE = APPLICANT_NAME.trim().split(/\s+/).join('_') + '_Resume';

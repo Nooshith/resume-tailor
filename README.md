@@ -1,18 +1,107 @@
-# Resume Tailor (Meta Muse edition)
+# Resume Tailor + Auto-Apply (Meta Muse edition)
 
-Turn a job description into a tailored, **1-page** resume that keeps your exact
-layout — same fonts, colors, alignment, bullets, and section spacing. This
-repo is the toolbox; **Meta Muse** is the agent that runs it.
+Upload your base resume once — Muse extracts your roles, finds matching jobs,
+tailors a 1-page resume per job, and applies. Up to **50–75 applications per
+day**. Your files live in **Google Drive**, never on local disk, and this repo
+never holds your personal data.
 
 > **Privacy by design:** this repo ships a blank template only. Your name,
-> contact, employers, and metrics live in env vars or your private copy of
-> `build_resume.js` — never in this repository. Fill in your own real history.
-> Never list tools, metrics, dates, titles, or employers you cannot defend in
-> an interview.
+> contact, employers, and metrics live in env vars and your Google Drive —
+> never in this repository. Never list tools, metrics, dates, titles, or
+> employers you cannot defend in an interview.
 
 ---
 
-## 1. Prerequisites
+## 1. The pipeline (what happens)
+
+```
+You clone the repo into Muse
+  -> Muse asks you to upload your base resume (first run only)
+  -> Muse extracts every role from it: titles, employers, dates, skills
+  -> Muse searches jobs matching those roles
+  -> For each job, per day (cap: 50-75):
+       read JD -> tailor resume (Draft 1 -> ATS review -> hiring-manager review)
+       -> build DOCX -> PDF -> layout MATCH check (exactly 1 page)
+       -> fill application -> submit
+       -> save resume + JD + application record to Google Drive
+```
+
+### First-run onboarding
+
+Clone the repo and open it in Muse (app, web, or any Muse chat surface that
+can run commands). Muse will ask you to **upload your base resume**. From it,
+Muse extracts:
+
+- every role: title, employer, start/end dates
+- skills and tools per role
+- education, certifications, contact details
+
+Muse also asks **where your Google Drive folder is** (e.g. your Drive's
+`job_resumes` folder). That path becomes `OUT_BASE` — every application from
+then on is filed there. Nothing personal is written to local disk or to this
+repo.
+
+Session prompt for the first run:
+
+> I just cloned resume-tailor. Onboard me: ask for my base resume, extract
+> all my roles, skills, employers, and dates from it, then ask where my
+> Google Drive job_resumes folder is and remember it.
+
+### Approval gates (first 2 only)
+
+For your **first 2 applications**, Muse stops and asks for approval twice:
+
+1. **Resume approval** — Muse shows the tailored resume; you approve or ask
+   for changes.
+2. **Submission approval** — Muse shows the filled application (every field);
+   you approve before it submits.
+
+From the **3rd application onward, no approvals** — Muse tailors, verifies,
+and submits on its own. (Muse still never invents employers, titles, dates,
+metrics, tools, salary, or work-authorization facts, and still strips any
+number it cannot verify.)
+
+### Daily cap: 50–75 applications
+
+Each application is token-expensive: JD reading, multi-draft tailoring, two
+review passes, PDF build, layout verification, and form filling. Capping at
+**50–75 per day** keeps token usage sustainable while still running a serious
+volume. A daily run prompt:
+
+> Run today's apply batch: find fresh jobs matching my extracted roles,
+> tailor and apply, max 60 applications, and report what was submitted.
+
+### Google Drive, not local disk
+
+Every application is filed in Drive, never locally:
+
+```
+<Your Drive>/job_resumes/<Company>/<YYYY-MM-DD>_<Role-Slug>/
+  <First>_<Last>_Resume.pdf     (the file actually uploaded)
+  <First>_<Last>_Resume.docx    (spare copy)
+  JD.md                         (the job description as posted)
+  APPLICATION_FORM.md           (every question + the submitted answer)
+```
+
+Control the root with `OUT_BASE` (set during onboarding):
+
+```bash
+OUT_BASE="/path/to/your/Google Drive/job_resumes" \
+APPLICANT_NAME="Jane Doe" COMPANY=Acme ROLE_SLUG=Backend-Engineer \
+node build_resume.js
+```
+
+| Env var | Default | Purpose |
+|---|---|---|
+| `APPLICANT_NAME` | `YOUR FULL NAME` | Identity + filename base (`First_Last_Resume`) |
+| `COMPANY` | `ExampleCorp` | Company folder |
+| `ROLE_SLUG` | `Example-Role` | Role folder suffix (keep filesystem-safe) |
+| `RUN_DATE` | today (`YYYY-MM-DD`) | Date folder prefix |
+| `OUT_BASE` | Google Drive `job_resumes` if a Drive mount is found, else `~/Desktop/job_resumes` | Root — set this to your Drive folder during onboarding |
+
+---
+
+## 2. Prerequisites
 
 Four things, on any OS (macOS, Windows, Linux):
 
@@ -24,7 +113,7 @@ Four things, on any OS (macOS, Windows, Linux):
 | Carlito font (the resume's exact font) | `brew install --cask font-carlito` | download `ofl/carlito/` from github.com/google/fonts, install each `.ttf` | `sudo apt install fonts-crosextra-carlito` |
 | Git | preinstalled | `winget install Git.Git` | `sudo apt install git` |
 
-Check your setup:
+Setup:
 
 ```bash
 git clone https://github.com/forgephantom/resume-tailor.git
@@ -41,93 +130,53 @@ node build_resume.js
 ```
 
 Windows note: `soffice.exe` lives in `C:\Program Files\LibreOffice\program\`.
-If it is not on PATH, use the full path in the PDF step below.
+If it is not on PATH, use the full path in the PDF step.
 
 ---
 
-## 2. The Meta Muse workflow
+## 3. Per-application quality loop (runs automatically)
 
-You don't edit layout code by hand. You give Muse the JD; Muse does the
-tailoring, the rebuilds, and the verification loop.
-
-### Start a session
-
-Open this folder in Muse (Muse app, web, or any Muse chat surface that can
-run commands), then paste a prompt like:
-
-> Tailor my resume to this JD and keep the layout identical — return DOCX +
-> PDF: <paste the JD link or full JD text>
->
-> Rules: read build_resume.js, Resume_Section_Spec.md, and the JD first.
-> Rewrite ONLY the subtitle, summary, skills items, and experience bullets —
-> never my job titles, employers, dates, or metrics. Never invent tools,
-> metrics, dates, titles, or employers; flag JD requirements I cannot honestly
-> cover instead of adding them. Keep every layout constant and helper
-> untouched. File the run with COMPANY/ROLE_SLUG env vars, build with
-> `node build_resume.js`, convert with `soffice --headless --convert-to pdf`,
-> and verify with `python3 compare_layout.py ORIGINAL.pdf <new pdf>` until it
-> reports MATCH — trim words (never layout numbers) if sections run long.
-> Then report JD coverage %, anything omitted, and every claim I'd need to
-> defend in an interview.
-
-### What Muse does with that prompt
+Every single application goes through this — including the auto-approved ones:
 
 1. **Reads the JD** — must-have skills, nice-to-haves, exact keywords,
    seniority, top responsibilities.
 2. **Draft 1** — rewrites subtitle, summary, skills, and bullets against the
-   JD using your real history (maximum honest keyword match; your
-   user-attested experience may be surfaced even if it wasn't on the base
-   resume).
-3. **ATS recruiter review** — scores Draft 1 like an ATS + a 6-second resume
-   skim: keyword coverage, title match, scannability. Fixes the gaps.
-4. **Hiring-manager review** — scores the result like the hiring manager:
-   impact, specificity, no fluff. Trims buzzwords and weak bullets.
+   JD using your real history (maximum honest keyword match).
+3. **ATS recruiter review** — scores Draft 1 like an ATS + a 6-second skim:
+   keyword coverage, title match, scannability. Fixes the gaps.
+4. **Hiring-manager review** — scores for impact and specificity, trims fluff
+   and buzzwords.
 5. **Build + verify** — writes the `.docx`, converts to PDF with LibreOffice,
    runs `compare_layout.py` against your original PDF. If section headers
    shifted or it spilled to 2 pages, Muse trims words and rebuilds until
    **MATCH** (identical spacing, exactly 1 page).
-6. **Report** — shows review scores before/after, the top changes, JD coverage
-   %, omitted items, and a "confirm before applying" list of anything added
-   beyond the base resume.
+6. **Apply + record** — fills the application from your verified facts,
+   submits (after approval for the first 2), and saves the full packet
+   (PDF + DOCX + JD + every question/answer) to your Drive folder.
 
-### First-time setup (one session)
-
-In your first session, paste your current resume text (or keep a private
-`ORIGINAL.pdf` as the `compare_layout.py` baseline) and tell Muse to put your
-real content into `build_resume.js`, replacing the sample strings. From then
-on, every role gets its own run via env vars — the template in this repo
-never holds your data:
-
-```bash
-APPLICANT_NAME="Jane Doe" COMPANY=Acme ROLE_SLUG=Backend-Engineer node build_resume.js
-# -> ~/Desktop/job_resumes/Acme/2026-09-26_Backend-Engineer/Jane_Doe_Resume.docx
-soffice --headless --convert-to pdf ~/Desktop/job_resumes/Acme/*/*.docx
-```
-
-| Env var | Default | Purpose |
-|---|---|---|
-| `APPLICANT_NAME` | `YOUR FULL NAME` | Identity + filename base (`First_Last_Resume`) |
-| `COMPANY` | `ExampleCorp` | Company folder |
-| `ROLE_SLUG` | `Example-Role` | Role folder suffix (keep filesystem-safe) |
-| `RUN_DATE` | today (`YYYY-MM-DD`) | Date folder prefix |
-| `OUT_BASE` | `~/Desktop/job_resumes` | Root (point elsewhere on Windows) |
+After a batch, Muse reports: roles submitted, JD coverage %, anything
+omitted, and every claim you'd need to defend in an interview.
 
 ---
 
-## 3. How it works
+## 4. How it works (technical)
 
 ```
-JD (URL / pasted text)
-  -> Muse: content rewrite (summary/skills/bullets, honesty rules, no fabrication)
-  -> Muse: ATS review -> hiring-manager review (two scoring passes)
-  -> build_resume.js (docx lib: constants S_NAME..S_SK, helpers name/subtitle/
-       contact/section/summary/skill/jobline/role/bullet/certline/eduline,
-       Letter page, 0.22"/0.6" margins, Carlito, navy 1F3864)
-  -> <First>_<Last>_Resume.docx (auto-filed under ~/Desktop/job_resumes/...)
-  -> LibreOffice (soffice --headless --convert-to pdf)
-  -> <First>_<Last>_Resume.pdf
-  -> compare_layout.py (PyMuPDF: every section header Y-position + line count
-       vs the original PDF; MATCH = identical spacing, still 1 page)
+Base resume (uploaded once, kept private)
+  -> extracted profile: roles, employers, dates, skills
+  -> job search matched to those roles
+  -> per job: JD -> content rewrite (honesty rules, no fabrication)
+            -> ATS review -> hiring-manager review
+            -> build_resume.js (docx lib: constants S_NAME..S_SK,
+               helpers name/subtitle/contact/section/summary/skill/
+               jobline/role/bullet/certline/eduline,
+               Letter page, 0.22"/0.6" margins, Carlito, navy 1F3864)
+            -> <First>_<Last>_Resume.docx (filed in Google Drive)
+            -> LibreOffice (soffice --headless --convert-to pdf)
+            -> <First>_<Last>_Resume.pdf (the upload)
+            -> compare_layout.py (PyMuPDF: section header Y-positions +
+               line counts vs the original; MATCH = identical spacing, 1 page)
+            -> application submitted -> packet saved to Drive
 ```
 
 Why it is built this way:
@@ -145,10 +194,13 @@ Why it is built this way:
 - **Honesty gate:** role titles, employers, dates, metrics, and skills must be
   real and defensible. Anything in the JD without real backing is reported as
   omitted, not added. Disputed numbers are stripped, never shipped.
+- **The repo stays data-free:** your resume, tailored outputs, and
+  application records live in Google Drive. Cloning this repo gives a new
+  user the pipeline, not your data.
 
 ---
 
-## 4. Files
+## 5. Files
 
 | File | What it is |
 |---|---|
@@ -158,14 +210,14 @@ Why it is built this way:
 | `HOW_TO_RUN_OPENCODE.md` | Alternate quick guide for OpenCode users. |
 | `package.json` / `requirements.txt` | Pinned deps. |
 
-## 5. Troubleshooting
+## 6. Troubleshooting
 
 - **`soffice` not found (Windows):** use the full path to `soffice.exe`
-  (section 1).
+  (section 2).
 - **PDF is 2 pages:** tailored text ran long. Ask Muse to shorten
   summary/bullets a few words (keep metrics + tool names) and rebuild. Never
   shrink fonts/margins.
-- **Wraps differ from the original:** wrong font (install Carlito, section 1)
+- **Wraps differ from the original:** wrong font (install Carlito, section 2)
   or wrong docx version (`npm install` must resolve 8.5.0 — check
   `npm list docx`).
 - **LibreOffice replaces fonts:** clear the font cache (`fc-cache -f` on
@@ -173,3 +225,5 @@ Why it is built this way:
 - **Verification never reaches MATCH:** the model is editing layout numbers
   instead of trimming words — remind it: content strings only, constants
   untouched.
+- **Drive folder not found:** re-run onboarding and give the exact Drive path;
+  it becomes `OUT_BASE` for every later run.
