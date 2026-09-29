@@ -20,15 +20,18 @@ job matching, tailored resumes, and applications.
 > I just loaded the applyforge repo — all files, beginning to end. Run the
 > full pipeline. First, onboard me: ask for my base resume, extract every
 > role from it (titles, employers, dates, skills), and ask where my Google
-> Drive job_resumes folder is — remember it as OUT_BASE. Then find fresh
-> jobs matching my roles and apply, up to 60 per day. For my first 2
+> Drive job_resumes folder is — remember it as OUT_BASE. Then find jobs
+> matching my roles that were posted between 60 minutes and 7 days ago,
+> prioritizing roles that offer visa sponsorship (H-1B). Search LinkedIn
+> first, then other job sites. Apply to up to 60 per day. For my first 2
 > applications, show me the tailored resume and the filled application for
 > approval before submitting; from the 3rd application on, run on full
 > autopilot. Never invent employers, titles, dates, metrics, tools, salary,
 > or work-authorization facts — report anything unverifiable as omitted,
-> never added. Save every application packet (PDF + DOCX + JD +
-> every question with its answer) under
-> <OUT_BASE>/<Company>/<YYYY-MM-DD>_<Role-Slug>/.
+> never added. Save to Drive ONLY the jobs actually applied to — each as a
+> packet (PDF + DOCX + JD + every question with its answer) under
+> <OUT_BASE>/<Company>/<YYYY-MM-DD>_<Role-Slug>/ — and remove anything
+> prepared but not submitted.
 
 That's it. Muse handles dependency setup (`docx@8.5.0`, `pymupdf`,
 `pypdf`), the pinned toolchain, PDF conversion, and layout verification
@@ -47,12 +50,16 @@ on its own.
   trimming words (never layout numbers) if sections run long.
 - **Apply + record.** Muse fills the application from your verified facts,
   submits (after your approval for the first 2), and files the full packet
-  to Drive.
+  to Drive — only for jobs actually applied to; anything prepared but not
+  submitted is removed.
 - **Daily report.** Roles submitted, JD coverage %, honestly omitted items,
   and every claim you should be ready to defend in an interview.
 
 ## The standing rules Muse follows
 
+- **Job sourcing:** only jobs posted between 60 minutes and 7 days ago.
+  Prioritize roles offering visa sponsorship (H-1B). Search LinkedIn first,
+  then other job sites.
 - **First 2 applications:** approval twice each — once for the tailored
   resume, once for the filled application before submit.
 - **3rd application onward:** full autopilot, no approvals.
@@ -61,7 +68,8 @@ on its own.
 - **Honesty gate:** role titles, employers, dates, metrics, and skills must
   be real and defensible. Disputed numbers are stripped, never shipped.
 - **Drive, not local disk:** nothing personal is written to local disk or
-  to this repository.
+  to this repository. Only jobs actually applied to are saved to Drive —
+  anything prepared but not submitted is removed.
 
 ## How it works (technical)
 

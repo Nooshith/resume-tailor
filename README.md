@@ -23,12 +23,14 @@ never holds your personal data.
 You clone the repo into Muse
   -> Muse asks you to upload your base resume (first run only)
   -> Muse extracts every role from it: titles, employers, dates, skills
-  -> Muse searches jobs matching those roles
+  -> Muse searches jobs matching those roles: posted 60 min – 7 days ago,
+     visa-sponsoring roles first, LinkedIn first then other sites
   -> For each job, per day (cap: 50-75):
        read JD -> tailor resume (Draft 1 -> ATS review -> hiring-manager review)
        -> build DOCX -> PDF -> layout MATCH check (exactly 1 page)
        -> fill application -> submit
        -> save resume + JD + application record to Google Drive
+          (ONLY for jobs actually applied to; the rest is removed)
 ```
 
 ### The single prompt (runs everything)
@@ -39,15 +41,18 @@ onboarding, role extraction, and the apply loop:
 > I just loaded the applyforge repo — all files, beginning to end. Run the
 > full pipeline. First, onboard me: ask for my base resume, extract every
 > role from it (titles, employers, dates, skills), and ask where my Google
-> Drive job_resumes folder is — remember it as OUT_BASE. Then find fresh
-> jobs matching my roles and apply, up to 60 per day. For my first 2
+> Drive job_resumes folder is — remember it as OUT_BASE. Then find jobs
+> matching my roles that were posted between 60 minutes and 7 days ago,
+> prioritizing roles that offer visa sponsorship (H-1B). Search LinkedIn
+> first, then other job sites. Apply to up to 60 per day. For my first 2
 > applications, show me the tailored resume and the filled application for
 > approval before submitting; from the 3rd application on, run on full
 > autopilot. Never invent employers, titles, dates, metrics, tools, salary,
 > or work-authorization facts — report anything unverifiable as omitted,
-> never added. Save every application packet (PDF + DOCX + JD +
-> every question with its answer) under
-> <OUT_BASE>/<Company>/<YYYY-MM-DD>_<Role-Slug>/.
+> never added. Save to Drive ONLY the jobs actually applied to — each as a
+> packet (PDF + DOCX + JD + every question with its answer) under
+> <OUT_BASE>/<Company>/<YYYY-MM-DD>_<Role-Slug>/ — and remove anything
+> prepared but not submitted.
 
 ### First-run onboarding
 
@@ -87,7 +92,8 @@ per day`) — adjust the number in the prompt any time.
 
 ### Google Drive, not local disk
 
-Every application is filed in Drive, never locally:
+Only jobs you actually applied to are filed in Drive — anything prepared
+but not submitted is removed, never kept:
 
 ```
 <Your Drive>/job_resumes/<Company>/<YYYY-MM-DD>_<Role-Slug>/
@@ -155,7 +161,9 @@ Every single application goes through this — including the auto-approved ones:
    **MATCH** (identical spacing, exactly 1 page).
 6. **Apply + record** — fills the application from your verified facts,
    submits (after approval for the first 2), and saves the full packet
-   (PDF + DOCX + JD + every question/answer) to your Drive folder.
+   (PDF + DOCX + JD + every question/answer) to your Drive folder — only
+   for jobs actually applied to; anything prepared but not submitted is
+   removed.
 
 After a batch, Muse reports: roles submitted, JD coverage %, anything
 omitted, and every claim you'd need to defend in an interview.
