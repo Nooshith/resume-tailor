@@ -1,9 +1,14 @@
-# Resume Tailor + Auto-Apply (Meta Muse edition)
+# ApplyForge (Meta Muse edition)
 
 Upload your base resume once — Muse extracts your roles, finds matching jobs,
 tailors a 1-page resume per job, and applies. Up to **50–75 applications per
 day**. Your files live in **Google Drive**, never on local disk, and this repo
 never holds your personal data.
+
+> **One prompt runs everything.** Load this repo into Muse (it reads every
+> file, beginning to end), paste the single prompt in §1, and Muse runs the
+> whole pipeline — onboarding, role extraction, job matching, tailored
+> resumes, applications — with no further setup.
 
 > **Privacy by design:** this repo ships a blank template only. Your name,
 > contact, employers, and metrics live in env vars and your Google Drive —
@@ -26,10 +31,27 @@ You clone the repo into Muse
        -> save resume + JD + application record to Google Drive
 ```
 
+### The single prompt (runs everything)
+
+After loading this repo into Muse, paste this one prompt — it covers
+onboarding, role extraction, and the apply loop:
+
+> I just loaded the applyforge repo — all files, beginning to end. Run the
+> full pipeline. First, onboard me: ask for my base resume, extract every
+> role from it (titles, employers, dates, skills), and ask where my Google
+> Drive job_resumes folder is — remember it as OUT_BASE. Then find fresh
+> jobs matching my roles and apply, up to 60 per day. For my first 2
+> applications, show me the tailored resume and the filled application for
+> approval before submitting; from the 3rd application on, run on full
+> autopilot. Never invent employers, titles, dates, metrics, tools, salary,
+> or work-authorization facts — report anything unverifiable as omitted,
+> never added. Save every application packet (PDF + DOCX + JD +
+> every question with its answer) under
+> <OUT_BASE>/<Company>/<YYYY-MM-DD>_<Role-Slug>/.
+
 ### First-run onboarding
 
-Clone the repo and open it in Muse (app, web, or any Muse chat surface that
-can run commands). Muse will ask you to **upload your base resume**. From it,
+On the first run, Muse asks you to **upload your base resume**. From it,
 Muse extracts:
 
 - every role: title, employer, start/end dates
@@ -40,12 +62,6 @@ Muse also asks **where your Google Drive folder is** (e.g. your Drive's
 `job_resumes` folder). That path becomes `OUT_BASE` — every application from
 then on is filed there. Nothing personal is written to local disk or to this
 repo.
-
-Session prompt for the first run:
-
-> I just cloned resume-tailor. Onboard me: ask for my base resume, extract
-> all my roles, skills, employers, and dates from it, then ask where my
-> Google Drive job_resumes folder is and remember it.
 
 ### Approval gates (first 2 only)
 
@@ -66,10 +82,8 @@ number it cannot verify.)
 Each application is token-expensive: JD reading, multi-draft tailoring, two
 review passes, PDF build, layout verification, and form filling. Capping at
 **50–75 per day** keeps token usage sustainable while still running a serious
-volume. A daily run prompt:
-
-> Run today's apply batch: find fresh jobs matching my extracted roles,
-> tailor and apply, max 60 applications, and report what was submitted.
+volume. The single prompt above already includes the daily batch (`up to 60
+per day`) — adjust the number in the prompt any time.
 
 ### Google Drive, not local disk
 
@@ -115,7 +129,7 @@ All you do:
 2. Bring this repo into Muse — clone it or upload the folder:
 
    `git clone https://github.com/forgephantom/applyforge.git`
-3. Paste the onboarding prompt from §1.
+3. Paste the single prompt from §1.
 
 Muse handles the rest, including installing the pinned dependencies
 (`docx@8.5.0`, `pymupdf`, `pypdf`) the first time it builds, and verifying
@@ -196,7 +210,7 @@ Why it is built this way:
 | `build_resume.js` | Layout engine + sample content. Edit strings only; your real data comes from env vars or your private copy. |
 | `Resume_Section_Spec.md` | Content rules: sections, bullet template, honesty/ban rules. |
 | `compare_layout.py` | Layout verifier: `python3 compare_layout.py ORIG.pdf NEW.pdf`. |
-| `HOW_TO_RUN_MUSE.md` | Short Muse-only quick guide: onboard, tailor, auto-apply. No installs. |
+| `HOW_TO_RUN_MUSE.md` | Single-prompt quick guide: load the repo, paste one prompt, Muse runs everything. No installs. |
 | `package.json` / `requirements.txt` | Pinned deps. |
 
 ## 6. Troubleshooting
