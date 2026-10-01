@@ -179,6 +179,15 @@ All you do:
    Then point Muse at the cloned folder (upload it, attach it, or open the
    folder in the desktop app).
 
+   > **Staying updated (one command):** new releases land on GitHub as soon
+   > as they're cut. If you cloned, getting the latest is a single command
+   > from inside the folder:
+   > ```bash
+   > cd applyforge && git pull
+   > ```
+   > Or just ask Muse to update it for you. (ZIP downloads have no update
+   > path — re-download, or clone once and `git pull` from then on.)
+
    **Or download the ZIP:** open
    [github.com/forgephantom/applyforge](https://github.com/forgephantom/applyforge),
    click **Code → Download ZIP**, unzip it, and give the folder to Muse.
