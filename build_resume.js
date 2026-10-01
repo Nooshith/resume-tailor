@@ -77,8 +77,8 @@ function name(t){return para({alignment:AlignmentType.CENTER,spacing:{after:14}}
 function subtitle(t){return para({alignment:AlignmentType.CENTER,spacing:{after:14}},[R(t,{size:S_SUB,color:GRAY})]);}
 function contact(a,b){return para({alignment:AlignmentType.CENTER,spacing:{after:70}},[R(a,{size:S_CONTACT,color:BODY}),R(b,{size:S_CONTACT,color:LINK})]);}
 function section(t){return para({spacing:{before:80,after:40},border:{bottom:{style:BorderStyle.SINGLE,size:6,space:2,color:NAVY}}},[R(t,{bold:true,size:S_H,color:NAVY})]);}
-function summary(t){return para({spacing:{after:11,line:218}},[R(t,{size:S_BODY,color:BODY})]);}
-function skill(label,val){return para({spacing:{after:11,line:218}},[R(label+': ',{bold:true,size:S_SK,color:NAVY}),R(val,{size:S_SK,color:BODY})]);}
+function summary(t){return para({spacing:{after:9,line:218}},[R(t,{size:S_BODY,color:BODY})]);}
+function skill(label,val){return para({spacing:{after:9,line:218}},[R(label+': ',{bold:true,size:S_SK,color:NAVY}),R(val,{size:S_SK,color:BODY})]);}
 
 // job header line: bold company, gray " | Loc", right-tab bold gray dates
 function jobline(company,loc,dates){

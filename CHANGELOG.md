@@ -4,6 +4,22 @@ All notable changes to ApplyForge. Versions follow semver: `vMAJOR.MINOR.PATCH`.
 
 ---
 
+## v2.0.2 — 2026-09-30
+
+### Fixed
+- `build_resume.js` template: summary and skill paragraph after-spacing
+  synced to the proven baseline values (11 → 9). The template's layout
+  constants are identical to the production baseline again, so new users
+  start from spacing that is verified to hold one page.
+- `Resume_Section_Spec.md`: tailoring-skill note now points at the shipped
+  `skills/jd-resume-review-loop/SKILL.md` instead of claiming the skill is
+  not part of the repo.
+
+### Changed
+- Version bumped to 2.0.2 (`package.json`).
+
+---
+
 ## v2.0.1 — 2026-09-30
 
 ### Added

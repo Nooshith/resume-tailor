@@ -5,9 +5,9 @@ Muse follows this file to produce content that fits the same code-based
 layout; another run following the same file should produce near-identical
 output.
 
-> Note: references below to `Resume_Tailoring_Skill.md` mean the tailoring
-> rules in `README.md` §3 (or your own private skill file by that name — it
-> is not part of this repo).
+> Note: references below to the tailoring skill mean
+> `skills/jd-resume-review-loop/SKILL.md` (shipped in this repo) — the
+> six-reviewer loop, scoring rules, interview vote, and style bans.
 
 This file governs **what to write in each section**. Two other sources handle
 the rest:
