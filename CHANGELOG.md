@@ -4,6 +4,25 @@ All notable changes to ApplyForge. Versions follow semver: `vMAJOR.MINOR.PATCH`.
 
 ---
 
+## v2.0.1 — 2026-09-30
+
+### Added
+- **Sponsorship check before every application (documented).** Before a
+  packet is built, the company's H-1B history is looked up (h1bdata.info /
+  USCIS H-1B Employer Data Hub) and proven sponsors are prioritized;
+  companies with no H-1B history and no sponsorship signal are skipped when
+  better options exist. The per-application sponsorship signal (proven
+  sponsor / history unclear / no history) is logged in the run report. The
+  check changes which companies get applications — work-authorization
+  answers stay exactly as they are, nothing is misrepresented.
+- README gained a "Sponsorship check" subsection; the single prompt and
+  HOW_TO_RUN_MUSE's standing rules now include the lookup step.
+
+### Changed
+- Version bumped to 2.0.1 (`package.json`).
+
+---
+
 ## v2.0.0 — 2026-09-30
 
 The quality loop was rebuilt from two review passes into a full six-reviewer

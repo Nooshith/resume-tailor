@@ -21,10 +21,12 @@ job matching, tailored resumes, and applications.
 > full pipeline. First, onboard me: ask for my base resume, extract every
 > role from it (titles, employers, dates, skills), and ask where my Google
 > Drive job_resumes folder is — remember it as OUT_BASE. Then find jobs
-> matching my roles that were posted between 60 minutes and 7 days ago,
-> prioritizing roles that offer visa sponsorship (H-1B). Search LinkedIn
-> first, then other job sites. Apply to up to 60 per day. For my first 2
-> applications, show me the tailored resume and the filled application for
+> matching my roles that were posted between 60 minutes and 7 days ago.
+> Before building a packet for a company, check its H-1B history
+> (h1bdata.info or the USCIS H-1B Employer Data Hub) and prioritize proven
+> sponsors; skip companies with no H-1B history and no sponsorship signal
+> when better options exist. Search LinkedIn first, then other job sites.
+> Apply to up to 60 per day. For my first 2 applications, show me the tailored resume and the filled application for
 > approval before submitting; from the 3rd application on, run on full
 > autopilot. Never invent employers, titles, dates, metrics, tools, salary,
 > or work-authorization facts — report anything unverifiable as omitted,
@@ -61,7 +63,11 @@ on its own.
 ## The standing rules Muse follows
 
 - **Job sourcing:** only jobs posted between 60 minutes and 7 days ago.
-  Prioritize roles offering visa sponsorship (H-1B). Search LinkedIn first,
+  **Sponsorship check before every application:** look up the company's H-1B
+  history (h1bdata.info / USCIS H-1B Employer Data Hub) and prioritize
+  proven sponsors; skip companies with no H-1B history and no sponsorship
+  signal when better options exist. Work-authorization answers stay exactly
+  as they are — nothing gets misrepresented. Search LinkedIn first,
   then other job sites.
 - **First 2 applications:** approval twice each — once for the tailored
   resume, once for the filled application before submit.

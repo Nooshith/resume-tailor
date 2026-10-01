@@ -33,7 +33,10 @@ You clone the repo into Muse
   -> Muse asks you to upload your base resume (first run only)
   -> Muse extracts every role from it: titles, employers, dates, skills
   -> Muse searches jobs matching those roles: posted 60 min – 7 days ago,
-     visa-sponsoring roles first, LinkedIn first then other sites
+     LinkedIn first then other sites
+  -> Sponsorship check per company: H-1B history lookup (h1bdata.info /
+     USCIS Data Hub); proven sponsors first; no-history + no-signal
+     companies skipped when better options exist
   -> For each job, per day (cap: 50-75):
        read JD -> Draft 1 -> Review A (ATS recruiter) -> Draft 2
        -> Review B (hiring manager) -> Draft 3
@@ -55,10 +58,12 @@ onboarding, role extraction, and the apply loop:
 > full pipeline. First, onboard me: ask for my base resume, extract every
 > role from it (titles, employers, dates, skills), and ask where my Google
 > Drive job_resumes folder is — remember it as OUT_BASE. Then find jobs
-> matching my roles that were posted between 60 minutes and 7 days ago,
-> prioritizing roles that offer visa sponsorship (H-1B). Search LinkedIn
-> first, then other job sites. Apply to up to 60 per day. For my first 2
-> applications, show me the tailored resume and the filled application for
+> matching my roles that were posted between 60 minutes and 7 days ago.
+> Before building a packet for a company, check its H-1B history
+> (h1bdata.info or the USCIS H-1B Employer Data Hub) and prioritize proven
+> sponsors; skip companies with no H-1B history and no sponsorship signal
+> when better options exist. Search LinkedIn first, then other job sites.
+> Apply to up to 60 per day. For my first 2 applications, show me the tailored resume and the filled application for
 > approval before submitting; from the 3rd application on, run on full
 > autopilot. Never invent employers, titles, dates, metrics, tools, salary,
 > or work-authorization facts — report anything unverifiable as omitted,
@@ -66,6 +71,25 @@ onboarding, role extraction, and the apply loop:
 > packet (PDF + DOCX + JD + every question with its answer) under
 > <OUT_BASE>/<Company>/<YYYY-MM-DD>_<Role-Slug>/ — and remove anything
 > prepared but not submitted.
+
+### Sponsorship check (before every application)
+
+Work-authorization disclosure is the top post-review rejection driver, so
+every run weights toward proven sponsors — **before** any resume is built:
+
+1. Look up the company's H-1B history: search `site:h1bdata.info
+   <Company>` or check the USCIS H-1B Employer Data Hub for recent
+   filings/approvals.
+2. Priority order: **(1)** companies with recent H-1B filings or an explicit
+   sponsorship offer; **(2)** companies with older or unclear history;
+   **(3)** skip companies with no H-1B history AND no sponsorship signal
+   when better options exist.
+3. Log the signal per application: proven sponsor / history unclear / no
+   history.
+
+Your work-authorization answers stay exactly as they are — the check changes
+*which companies* get applications, never what you claim. Nothing is
+misrepresented to pass it.
 
 ### First-run onboarding
 

@@ -1,6 +1,6 @@
 {
   "name": "resume-tailor",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Fixed-layout 1-page resume builder: edit content strings, build .docx, convert to PDF.",
   "main": "build_resume.js",
   "scripts": {
