@@ -94,7 +94,7 @@ function bullet(boldPart, rest){
     children:[R(boldPart,{bold:true,size:S_BODY,color:BODY}), R(rest,{size:S_BODY,color:BODY})]});
 }
 function certline(t){return para({spacing:{after:3,line:214}},[R(t,{size:S_SK,color:BODY})]);}
-function eduline(txt,date){return para({spacing:{after:0,line:218},tabStops:[{type:'right',position:10512}]},[R(txt,{size:S_BODY,color:BODY}),R('\t'+date,{italics:true,size:S_BODY,color:GRAY})]);}
+function eduline(txt,date){return para({spacing:{after:0,line:218},tabStops:[{type:'right',position:10512}]},[R(txt,{size:S_BODY,color:BODY}),R('\t'+date,{bold:true,size:S_JOB,color:GRAY})]);}
 
 const doc=new Document({
   styles:{default:{document:{run:{font:FONT,size:S_BODY,color:BODY}}}},
