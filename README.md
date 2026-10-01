@@ -6,10 +6,13 @@
 ![no installs](https://img.shields.io/badge/installs-none-orange)
 
 **AI job-application autopilot.** Upload your base resume once — Muse
-extracts your roles, finds matching jobs, tailors a 1-page ATS-optimized
-resume per job, and applies. Up to **50–75 applications per day**, on
-autopilot from the 3rd application. Your files live in **Google Drive**,
-never on local disk, and this repo never holds your personal data.
+extracts your roles, finds matching jobs, and for every job runs your
+resume through a **six-reviewer quality loop** (ATS recruiter, hiring
+manager, peer engineer, executive skim, HR red-flag screen, AI-voice
+detector) plus a final **interview vote** — then applies. Up to **50–75
+applications per day**, on autopilot from the 3rd application. Your files
+live in **Google Drive**, never on local disk, and this repo never holds
+your personal data.
 
 > **One prompt runs everything.** Load this repo into Muse (it reads every
 > file, beginning to end), paste the single prompt in §1, and Muse runs the
@@ -32,7 +35,11 @@ You clone the repo into Muse
   -> Muse searches jobs matching those roles: posted 60 min – 7 days ago,
      visa-sponsoring roles first, LinkedIn first then other sites
   -> For each job, per day (cap: 50-75):
-       read JD -> tailor resume (Draft 1 -> ATS review -> hiring-manager review)
+       read JD -> Draft 1 -> Review A (ATS recruiter) -> Draft 2
+       -> Review B (hiring manager) -> Draft 3
+       -> Review C (peer engineer) -> Review D (executive 6-second skim)
+       -> Review E (HR red-flag screen) -> Review F (AI-voice detector)
+       -> unanimous interview vote (all six reviewers)
        -> build DOCX -> PDF -> layout MATCH check (exactly 1 page)
        -> fill application -> submit
        -> save resume + JD + application record to Google Drive
@@ -138,9 +145,23 @@ All you do:
 1. Get the Muse app at [muse.ai](https://muse.ai) — iPhone (App Store),
    Android (Google Play), the Mac app, or the web app, which works on any OS
    including Windows.
-2. Bring this repo into Muse — clone it or upload the folder:
+2. Bring this repo into Muse so it can read every file, beginning to end.
+   Pick whichever your Muse surface supports:
 
-   `git clone https://github.com/forgephantom/applyforge.git`
+   **Clone it** (recommended — keeps you on the latest release):
+   ```bash
+   git clone https://github.com/forgephantom/applyforge.git
+   ```
+   Then point Muse at the cloned folder (upload it, attach it, or open the
+   folder in the desktop app).
+
+   **Or download the ZIP:** open
+   [github.com/forgephantom/applyforge](https://github.com/forgephantom/applyforge),
+   click **Code → Download ZIP**, unzip it, and give the folder to Muse.
+
+   **Or grab a release:** tagged versions with changelogs live under
+   [Releases](https://github.com/forgephantom/applyforge/releases) —
+   download the source ZIP for the version you want.
 3. Paste the single prompt from §1.
 
 Muse handles the rest, including installing the pinned dependencies
@@ -151,28 +172,51 @@ the sample template renders exactly 1 page before your first real run.
 
 ## 3. Per-application quality loop (runs automatically)
 
-Every single application goes through this — including the auto-approved ones:
+Every single application goes through this — including the auto-approved ones.
+The bar is **10/10 from every reviewer**; any score below 10 sends the draft
+back for another pass (max 3 full rounds), and nothing ships until **all six
+reviewers vote "interview"**:
 
 1. **Reads the JD** — must-have skills, nice-to-haves, exact keywords,
    seniority, top responsibilities.
-2. **Draft 1** — rewrites subtitle, summary, skills, and bullets against the
-   JD using your real history (maximum honest keyword match).
-3. **ATS recruiter review** — scores Draft 1 like an ATS + a 6-second skim:
-   keyword coverage, title match, scannability. Fixes the gaps.
-4. **Hiring-manager review** — scores for impact and specificity, trims fluff
-   and buzzwords.
-5. **Build + verify** — writes the `.docx`, converts to PDF with LibreOffice,
-   runs `compare_layout.py` against your original PDF. If section headers
-   shifted or it spilled to 2 pages, Muse trims words and rebuilds until
-   **MATCH** (identical spacing, exactly 1 page).
-6. **Apply + record** — fills the application from your verified facts,
-   submits (after approval for the first 2), and saves the full packet
-   (PDF + DOCX + JD + every question/answer) to your Drive folder — only
-   for jobs actually applied to; anything prepared but not submitted is
-   removed.
+2. **Draft 1** — rewrites the title line (`<JD role> • <lane descriptor>`),
+   summary, skills, and bullets against the JD using your real history
+   (maximum honest keyword match). The summary's first line states your
+   years, lane identity, and strongest attested scale or outcome.
+3. **Review A — ATS recruiter.** Scores keyword coverage must-have by
+   must-have, scannability, parsing risks. Fixes the gaps.
+4. **Review B — hiring manager.** Scores credibility and impact. Hard
+   **impact gate**: every bullet must carry ownership, scale, or a
+   measurable outcome — duty-only bullets fail, no matter how well they
+   match keywords.
+5. **Review C — peer engineer.** Would the tooling and scale claims survive
+   a technical screen? Catches misused terms and fluff an engineer would
+   spot.
+6. **Review D — executive skim.** The 6-second test: title + summary + first
+   two bullets must say who you are and why you're strong instantly.
+7. **Review E — HR red-flag screen.** Timeline gaps, title-scope
+   consistency, level fit, verification risk.
+8. **Review F — AI-voice detector.** Scans the banned-word list and AI
+   phrasings (em dashes, "not only/but also", triple parallelisms,
+   "furthermore", uniform bullet rhythm, hedged claims like "helped with")
+   and rewrites anything that reads machine-generated.
+9. **Interview vote.** All six reviewers vote "interview" or "no
+   interview" with a one-line reason. Any "no" triggers a targeted
+   revision and a re-vote. Dissent after 3 rounds is shown to you with the
+   reason.
+10. **Build + verify** — writes the `.docx`, converts to PDF with
+    LibreOffice, runs `compare_layout.py` against your original PDF. If
+    section headers shifted or it spilled to 2 pages, Muse trims words and
+    rebuilds until **MATCH** (identical spacing, exactly 1 page).
+11. **Apply + record** — fills the application from your verified facts,
+    submits (after approval for the first 2), and saves the full packet
+    (PDF + DOCX + JD + every question/answer) to your Drive folder — only
+    for jobs actually applied to; anything prepared but not submitted is
+    removed.
 
-After a batch, Muse reports: roles submitted, JD coverage %, anything
-omitted, and every claim you'd need to defend in an interview.
+After a batch, Muse reports: all six scores before/after, the interview
+vote, top 3 changes, JD coverage %, anything omitted, and every claim
+you'd need to defend in an interview.
 
 ---
 
@@ -183,7 +227,9 @@ Base resume (uploaded once, kept private)
   -> extracted profile: roles, employers, dates, skills
   -> job search matched to those roles
   -> per job: JD -> content rewrite (honesty rules, no fabrication)
-            -> ATS review -> hiring-manager review
+            -> six-reviewer loop: ATS -> hiring manager -> peer engineer
+               -> executive skim -> HR red flags -> AI-voice detector
+            -> unanimous interview vote (10/10 bar per reviewer)
             -> build_resume.js (docx lib: constants S_NAME..S_SK,
                helpers name/subtitle/contact/section/summary/skill/
                jobline/role/bullet/certline/eduline,
@@ -222,6 +268,7 @@ Why it is built this way:
 | File | What it is |
 |---|---|
 | `build_resume.js` | Layout engine + sample content. Edit strings only; your real data comes from env vars or your private copy. |
+| `skills/jd-resume-review-loop/SKILL.md` | The six-reviewer quality loop skill: the full review sequence, scoring rules, interview vote, and style bans. Load it into Muse (or any agent) to run the loop. |
 | `Resume_Section_Spec.md` | Content rules: sections, bullet template, honesty/ban rules. |
 | `compare_layout.py` | Layout verifier: `python3 compare_layout.py ORIG.pdf NEW.pdf`. |
 | `HOW_TO_RUN_MUSE.md` | Single-prompt quick guide: load the repo, paste one prompt, Muse runs everything. No installs. |

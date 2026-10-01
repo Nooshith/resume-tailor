@@ -42,9 +42,12 @@ on its own.
 - **Onboarding (first run only).** Muse asks for your base resume, extracts
   all roles/skills/employers/dates, and records your Drive folder. Your
   personal data lives in Drive and in the session — never in this repo.
-- **Per job.** Muse reads the JD, rewrites subtitle/summary/skills/bullets
-  under honesty rules, runs an ATS recruiter review and a hiring-manager
-  review, builds with `node build_resume.js`, converts with
+- **Per job.** Muse reads the JD, rewrites title/summary/skills/bullets
+  under honesty rules, runs the **six-reviewer loop** (ATS recruiter,
+  hiring manager, peer engineer, executive skim, HR red-flag screen,
+  AI-voice detector — see `skills/jd-resume-review-loop/SKILL.md`),
+  requires a **unanimous interview vote** at a **10/10 bar**, builds with
+  `node build_resume.js`, converts with
   `soffice --headless --convert-to pdf`, and verifies with
   `python3 compare_layout.py ORIGINAL.pdf <new pdf>` until it prints MATCH —
   trimming words (never layout numbers) if sections run long.
@@ -64,7 +67,8 @@ on its own.
   resume, once for the filled application before submit.
 - **3rd application onward:** full autopilot, no approvals.
 - **Cap:** 50–75 applications per day (each one is token-heavy: JD reading,
-  multi-draft tailoring, two review passes, build, verify, form fill).
+  multi-draft tailoring, six review passes + interview vote, build, verify,
+  form fill).
 - **Honesty gate:** role titles, employers, dates, metrics, and skills must
   be real and defensible. Disputed numbers are stripped, never shipped.
 - **Drive, not local disk:** nothing personal is written to local disk or
