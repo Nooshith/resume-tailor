@@ -7,7 +7,7 @@ output.
 
 > Note: references below to the tailoring skill mean
 > `skills/jd-resume-review-loop/SKILL.md` (shipped in this repo) — the
-> six-reviewer loop, scoring rules, interview vote, and style bans.
+> seven-reviewer loop, scoring rules, interview vote, and style bans.
 
 This file governs **what to write in each section**. Two other sources handle
 the rest:

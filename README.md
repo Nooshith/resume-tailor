@@ -7,9 +7,9 @@
 
 **AI job-application autopilot.** Upload your base resume once — Muse
 extracts your roles, finds matching jobs, and for every job runs your
-resume through a **six-reviewer quality loop** (ATS recruiter, hiring
+resume through a **seven-reviewer quality loop** (ATS recruiter, hiring
 manager, peer engineer, executive skim, HR red-flag screen, AI-voice
-detector) plus a final **interview vote** — then applies. Up to **50–75
+detector, company lens) plus a final **interview vote** — then applies. Up to **50–75
 applications per day**, on autopilot from the 3rd application. Your files
 live in **Google Drive**, never on local disk, and this repo never holds
 your personal data.
@@ -42,7 +42,7 @@ You clone the repo into Muse
        -> Review B (hiring manager) -> Draft 3
        -> Review C (peer engineer) -> Review D (executive 6-second skim)
        -> Review E (HR red-flag screen) -> Review F (AI-voice detector)
-       -> unanimous interview vote (all six reviewers)
+       -> unanimous interview vote (all seven reviewers)
        -> build DOCX -> PDF -> layout MATCH check (exactly 1 page)
        -> fill application -> submit
        -> save resume + JD + application record to Google Drive
@@ -212,7 +212,7 @@ the sample template renders exactly 1 page before your first real run.
 
 Every single application goes through this — including the auto-approved ones.
 The bar is **10/10 from every reviewer**; any score below 10 sends the draft
-back for another pass (max 3 full rounds), and nothing ships until **all six
+back for another pass (max 3 full rounds), and nothing ships until **all seven
 reviewers vote "interview"**:
 
 1. **Reads the JD** — must-have skills, nice-to-haves, exact keywords,
@@ -238,7 +238,7 @@ reviewers vote "interview"**:
    phrasings (em dashes, "not only/but also", triple parallelisms,
    "furthermore", uniform bullet rhythm, hedged claims like "helped with")
    and rewrites anything that reads machine-generated.
-9. **Interview vote.** All six reviewers vote "interview" or "no
+9. **Interview vote.** All seven reviewers vote "interview" or "no
    interview" with a one-line reason. Any "no" triggers a targeted
    revision and a re-vote. Dissent after 3 rounds is shown to you with the
    reason.
@@ -252,7 +252,7 @@ reviewers vote "interview"**:
     for jobs actually applied to; anything prepared but not submitted is
     removed.
 
-After a batch, Muse reports: all six scores before/after, the interview
+After a batch, Muse reports: all seven scores before/after, the interview
 vote, top 3 changes, JD coverage %, anything omitted, and every claim
 you'd need to defend in an interview.
 
@@ -265,8 +265,9 @@ Base resume (uploaded once, kept private)
   -> extracted profile: roles, employers, dates, skills
   -> job search matched to those roles
   -> per job: JD -> content rewrite (honesty rules, no fabrication)
-            -> six-reviewer loop: ATS -> hiring manager -> peer engineer
+            -> seven-reviewer loop: ATS -> hiring manager -> peer engineer
                -> executive skim -> HR red flags -> AI-voice detector
+               -> company lens
             -> unanimous interview vote (10/10 bar per reviewer)
             -> build_resume.js (docx lib: constants S_NAME..S_SK,
                helpers name/subtitle/contact/section/summary/skill/
@@ -306,7 +307,7 @@ Why it is built this way:
 | File | What it is |
 |---|---|
 | `build_resume.js` | Layout engine + sample content. Edit strings only; your real data comes from env vars or your private copy. |
-| `skills/jd-resume-review-loop/SKILL.md` | The six-reviewer quality loop skill: the full review sequence, scoring rules, interview vote, and style bans. Load it into Muse (or any agent) to run the loop. |
+| `skills/jd-resume-review-loop/SKILL.md` | The seven-reviewer quality loop skill: the full review sequence, scoring rules, interview vote, and style bans. Load it into Muse (or any agent) to run the loop. |
 | `Resume_Section_Spec.md` | Content rules: sections, bullet template, honesty/ban rules. |
 | `compare_layout.py` | Layout verifier: `python3 compare_layout.py ORIG.pdf NEW.pdf`. |
 | `HOW_TO_RUN_MUSE.md` | Single-prompt quick guide: load the repo, paste one prompt, Muse runs everything. No installs. |

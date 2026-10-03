@@ -4,6 +4,62 @@ All notable changes to ApplyForge. Versions follow semver: `vMAJOR.MINOR.PATCH`.
 
 ---
 
+## v2.1.0 — 2026-10-03
+
+The loop grows a seventh reviewer and the whole pipeline gets stricter:
+every resume is now built to maximum interview strength, with a hard
+sponsorship gate before any application goes out.
+
+### Added
+- **Review G — company lens.** The loop is now seven reviewers. After the
+  AI-voice check, the resume is read exactly as the hiring company sees it:
+  a 10-second fit verdict, requirement-by-requirement traceability with
+  quoted proof lines, interview triggers, and company-side risks. All seven
+  reviewers must vote "interview" for the resume to ship.
+- **Skill-experience coverage map.** For each of the JD's top 10 skills the
+  build maps: in Skills section? → in Experience? → at which employer(s)?
+  Every top-10 skill must appear in both sections when truthfully
+  supportable; key skills are evidenced at every employer where actually
+  used. A skill with no honest anchor stays off the resume and is named as
+  a gap, never faked.
+- **ATS text simulation.** The final PDF is stripped to raw text and read
+  the way the ATS does: every top-10 keyword must survive in the extracted
+  text, sections in order, no garbled characters. A keyword missing from
+  the raw text fails even if it renders fine visually.
+- **Acronym rule.** Acronyms are expanded on first use ("service level
+  indicators/objectives (SLIs/SLOs)", "identity and access management
+  (IAM)") so full-phrase matchers hit. Role names are never abbreviated:
+  "Site Reliability Engineer", never "SRE"; "Senior", never "Sr".
+
+### Changed
+- **Interview-conversion standard.** The documented bar for every resume is
+  now maximum interview strength: the full seven-reviewer loop with zero
+  skipped steps, unanimous interview votes, 10/10 scores. No exceptions,
+  no shortcuts.
+- **Bullet formula v2.** Every Experience bullet follows [Action Verb] +
+  [What You Did] + [Quantified Result], with honest metrics on at least
+  70% of bullets. Numbers are never invented: attested metrics or honest
+  scope counts from items already listed in the bullet.
+- **Top-10 JD skills rule.** Every build extracts the JD's top 10 skills
+  and rewrites until 100% appear in context (Skills plus at least one
+  Experience bullet each), with repeated scan-check-rewrite cycles. Review
+  rounds raised to a maximum of 5; remaining gaps are shown explicitly.
+- **H-1B sponsorship gate (mandatory).** The per-application sponsorship
+  check is now a hard gate: extract H-1B filings for the last year and the
+  current year (h1bdata.info, USCIS H-1B Employer Data Hub) plus the
+  posting's own sponsorship language. Apply only with filings in either
+  year or an explicit sponsorship offer.
+- **Direct client only.** Applications go only to full-time roles posted by
+  the hiring company itself. Staffing agencies, recruiting firms,
+  consultancies, and third-party "on behalf of client" postings are
+  skipped even when the role is labeled full-time.
+- `.gitignore` hardened: per-company `build_*.js` files, sample outputs,
+  and bullet preview folders are never committed — no personal resume data
+  in the repo.
+- Version bumped to 2.1.0 (`package.json`).
+
+---
+
 ## v2.0.2 — 2026-09-30
 
 ### Fixed

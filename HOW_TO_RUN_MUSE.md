@@ -45,9 +45,9 @@ on its own.
   all roles/skills/employers/dates, and records your Drive folder. Your
   personal data lives in Drive and in the session — never in this repo.
 - **Per job.** Muse reads the JD, rewrites title/summary/skills/bullets
-  under honesty rules, runs the **six-reviewer loop** (ATS recruiter,
+  under honesty rules, runs the **seven-reviewer loop** (ATS recruiter,
   hiring manager, peer engineer, executive skim, HR red-flag screen,
-  AI-voice detector — see `skills/jd-resume-review-loop/SKILL.md`),
+  AI-voice detector, company lens — see `skills/jd-resume-review-loop/SKILL.md`),
   requires a **unanimous interview vote** at a **10/10 bar**, builds with
   `node build_resume.js`, converts with
   `soffice --headless --convert-to pdf`, and verifies with

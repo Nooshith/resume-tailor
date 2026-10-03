@@ -7,3 +7,8 @@ baseline/
 jobs/
 FOLDER_CONVENTION.md
 package-lock.json
+# Per-company tailored builders and sample outputs carry real resume data - never commit
+build_*.js
+samples_2026-10-03/
+preview_bullets_v2/
+preview_xyz/
